@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolBattles – Stake. Battle. Earn.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        :root {
+            --primary-bg: #1a1a2e;
+            --secondary-bg: #16213e;
+            --card-bg: #0f3460;
+            --text-color: #e0e0e0;
+            --highlight-color: #e94560;
+            --button-bg: #533483;
+            --button-hover: #e94560;
+            --glow-color: #8a2be2; /* BlueViolet */
+            --border-color: #0c7b93;
+            --dark-border: #0a1128;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll on some animations */
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--highlight-color);
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        p, ul {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: var(--highlight-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--glow-color);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--secondary-bg);
+            padding: 15px 0;
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            white-space: nowrap; /* Prevent breaking on small screens */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap; /* Allow nav items to wrap */
+            justify-content: center;
+        }
+
+        nav li {
+            margin: 0 15px;
+        }
+
+        nav a {
+            color: var(--text-color);
+            font-weight: bold;
+            padding: 5px 0;
+            position: relative;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--highlight-color);
+            left: 0;
+            bottom: -5px;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--highlight-color);
+            transform: translateY(-2px);
+        }
+
+        .glow-button {
+            background-color: var(--button-bg);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px var(--glow-color);
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .glow-button:hover {
+            background-color: var(--button-hover);
+            box-shadow: 0 0 15px var(--glow-color), 0 0 30px var(--glow-color);
+            transform: scale(1.05);
+        }
+
+        .glow-button:disabled {
+            background-color: #333;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
+
+
+        /* Main Content Sections */
+        main {
+            padding: 20px 0;
+        }
+
+        .page {
+            display: none;
+            padding: 40px 0;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Homepage */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1200x400/0f3460/e0e0e0?text=SOLBATTLES+ARENA') no-repeat center center/cover; /* Placeholder for hero_bg.png */
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            animation: heroGlow 2s infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            from { box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 10px rgba(138, 43, 226, 0.3); }
+            to { box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(138, 43, 226, 0.7); }
+        }
+
+        .hero h2 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: var(--text-color);
+            text-shadow: 3px 3px 7px var(--highlight-color);
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #ccc;
+        }
+
+        .about-section {
+            background-color: var(--secondary-bg);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-section h3 {
+            font-size: 1.5em;
+            color: var(--highlight-color);
+            margin-top: 20px;
+            margin-bottom: 15px;
+            text-align: left;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .about-section p {
+            margin-bottom: 15px;
+        }
+
+        /* Card Styling (Reusable) */
+        .card {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--glow-color);
+        }
+
+        .card.selected {
+            border-color: var(--glow-color);
+            box-shadow: 0 0 30px var(--glow-color), 0 0 10px var(--highlight-color);
+            transform: translateY(-8px);
+        }
+
+        .card img {
+            width: 100%;
+            max-width: 180px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--dark-border);
+            object-fit: cover;
+        }
+
+        .card h4 {
+            margin: 10px 0;
+            color: var(--highlight-color);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1em;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+
+        .card-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 10px;
+            font-size: 0.8em;
+        }
+
+        .card-stat {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 3px 8px;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
+
+        .rarity {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        .rarity.common { color: #aaa; }
+        .rarity.rare { color: #00bfff; } /* Deep Sky Blue */
+        .rarity.epic { color: #8a2be2; } /* Blue Violet */
+        .rarity.legendary { color: #ffd700; } /* Gold */
+
+
+        /* Grids */
+        .card-grid, .shop-grid, .my-deck-grid, .revealed-cards-grid, .card-selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        /* Arena Page */
+        .arena-setup {
+            background-color: var(--secondary-bg);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .wallet-stake-input {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .wallet-stake-input input {
+            width: 100px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-family: 'Orbitron', sans-serif;
+            margin-left: 10px;
+        }
+
+        .card-selection-grid .card {
+            cursor: pointer;
+        }
+
+        .battle-results-box {
+            background-color: var(--secondary-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .battle-log {
+            background-color: var(--card-bg);
+            border: 1px solid var(--dark-border);
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 250px;
+            overflow-y: auto;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .battle-log p {
+            margin-bottom: 5px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .battle-log p:nth-child(even) {
+            color: #ccc;
+        }
+        .battle-log p strong {
+            color: var(--highlight-color);
+        }
+        .battle-log p.winner-message {
+            color: #4CAF50; /* Green */
+            font-weight: bold;
+        }
+        .battle-log p.loser-message {
+            color: #F44336; /* Red */
+            font-weight: bold;
+        }
+
+        #battleWinner {
+            color: #4CAF50;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            animation: winnerGlow 1s infinite alternate;
+        }
+
+        #battleLoser {
+            color: #F44336;
+            font-size: 1.2em;
+        }
+
+        @keyframes winnerGlow {
+            from { text-shadow: 0 0 5px #4CAF50; }
+            to { text-shadow: 0 0 15px #4CAF50, 0 0 30px #4CAF50; }
+        }
+
+
+        /* Card Packs Page */
+        #packOpeningAnimation {
+            text-align: center;
+            margin-top: 30px;
+            padding: 30px;
+            background-color: var(--secondary-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pack-image {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            animation: bounce 1s infinite alternate;
+            filter: drop-shadow(0 0 10px var(--glow-color));
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+
+        .reveal-message {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: var(--text-color);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .revealed-cards-grid .card {
+            animation: cardFlip 0.8s ease-out forwards;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .card-flip-container {
+            position: relative;
+            width: 200px; /* Adjust based on your card size */
+            height: 300px; /* Adjust based on your card size */
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+            margin: 0 auto; /* Center individual card flips */
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+            border: 2px solid var(--border-color);
+            background-color: var(--card-bg);
+        }
+
+        .card-front {
+            z-index: 2;
+            transform: rotateY(0deg);
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .card-back {
+            background-color: var(--button-bg);
+            border: 2px solid var(--glow-color);
+            transform: rotateY(180deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            color: var(--text-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .card-back::before {
+            content: "SLUG";
+            font-family: 'Press Start 2P', cursive;
+            opacity: 0.2;
+            font-size: 3em;
+            position: absolute;
+            z-index: 1;
+        }
+         .card-back img { /* Styling for image on the flipped card back */
+            max-width: 180px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--dark-border);
+            object-fit: cover;
+            z-index: 2; /* Ensure image is above pseudo-element */
+        }
+        .card-back h4, .card-back p, .card-back .card-stats {
+            z-index: 2; /* Ensure text is above pseudo-element */
+        }
+
+
+        /* Shop Page */
+        .shop-grid .card .buy-button {
+            margin-top: 15px;
+            width: calc(100% - 30px); /* Adjust for padding */
+            bottom: 15px;
+            left: 15px;
+            position: relative; /* Changed to relative as it's inside a flex column */
+        }
+        .shop-grid .card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+
+        /* My Deck Page */
+        .deck-controls {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .deck-controls label {
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .deck-controls select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-family: 'Orbitron', sans-serif;
+            min-width: 150px;
+        }
+
+        .my-deck-grid .card {
+            cursor: pointer;
+        }
+
+        .card-detail-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .card-detail-content {
+            background-color: var(--secondary-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid var(--glow-color);
+            box-shadow: 0 0 20px var(--glow-color);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .card-detail-content .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8em;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .card-detail-content .close-popup:hover {
+            color: var(--highlight-color);
+        }
+
+        .card-detail-content img {
+            max-width: 200px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid var(--dark-border);
+        }
+
+        .card-detail-content h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        .card-detail-content p {
+            font-size: 1em;
+            margin: 5px 0;
+        }
+
+        .card-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+
+        /* Leaderboard Page */
+        .leaderboard-table-container {
+            overflow-x: auto; /* Enable horizontal scroll on small screens */
+            background-color: var(--secondary-bg);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #leaderboardTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            white-space: nowrap; /* Keep table cells on one line */
+        }
+
+        #leaderboardTable th, #leaderboardTable td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        #leaderboardTable th {
+            background-color: var(--card-bg);
+            color: var(--highlight-color);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+
+        #leaderboardTable tbody tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        #leaderboardTable tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+
+        #leaderboardTable tbody tr {
+            animation: fadeInRow 0.5s ease-out;
+        }
+
+        @keyframes fadeInRow {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .leaderboard-table-container .rank-change {
+            display: inline-block;
+            margin-left: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: rankChangeEffect 0.5s forwards;
+        }
+
+        .rank-change.up { color: #4CAF50; }
+        .rank-change.down { color: #F44336; }
+        .rank-change.new { color: #00BFFF; }
+
+        @keyframes rankChangeEffect {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .weekly-update-note {
+            text-align: center;
+            font-style: italic;
+            color: #aaa;
+            margin-top: 20px;
+        }
+
+        /* Token Page */
+        .token-info {
+            background-color: var(--secondary-bg);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .token-info h3 {
+            text-align: left;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        .token-info ul {
+            list-style: disc inside;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .token-info ul li {
+            margin-bottom: 8px;
+        }
+
+        .token-info p {
+            margin-bottom: 10px;
+        }
+
+        .token-actions {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary-bg);
+            padding: 20px 0;
+            text-align: center;
+            border-top: 2px solid var(--border-color);
+            margin-top: 40px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        footer p {
+            margin: 0;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        /* Universal Popup */
+        .universal-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .universal-popup-content {
+            background-color: var(--secondary-bg);
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid var(--highlight-color);
+            box-shadow: 0 0 25px var(--glow-color);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            animation: popIn 0.3s ease-out;
+        }
+
+        .universal-popup-content .close-universal-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.8em;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .universal-popup-content .close-universal-popup:hover {
+            color: var(--highlight-color);
+        }
+
+        .universal-popup-content p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header h1 {
+                margin-bottom: 15px;
+                font-size: 1.5em;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            nav li {
+                margin: 0 8px;
+            }
+
+            .hero h2 {
+                font-size: 2.2em;
+            }
+
+            .hero p {
+                font-size: 1em;
+            }
+
+            .card-grid, .shop-grid, .my-deck-grid, .revealed-cards-grid, .card-selection-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .card img {
+                max-width: 120px;
+            }
+
+            .arena-setup, .battle-results-box, .about-section, .token-info {
+                padding: 20px;
+            }
+
+            .leaderboard-table-container {
+                padding: 10px;
+            }
+
+            #leaderboardTable th, #leaderboardTable td {
+                padding: 8px 10px;
+                font-size: 0.8em;
+            }
+
+            .card-detail-content, .universal-popup-content {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav li {
+                margin: 8px 0;
+            }
+
+            .hero {
+                padding: 50px 10px;
+            }
+
+            .hero h2 {
+                font-size: 1.8em;
+            }
+
+            .glow-button {
+                padding: 8px 15px;
+                font-size: 0.8em;
+            }
+
+            .card-grid, .shop-grid, .my-deck-grid, .revealed-cards-grid, .card-selection-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .card h4 {
+                font-size: 0.9em;
+            }
+
+            .card p, .card-stats {
+                font-size: 0.75em;
+            }
+
+            .wallet-stake-input label, .deck-controls label {
+                font-size: 1em;
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            .wallet-stake-input input, .deck-controls select {
+                width: calc(100% - 20px);
+                max-width: 150px;
+            }
+
+            .token-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>SolBattles</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#arena" class="nav-link" data-page="arena">Arena</a></li>
+                    <li><a href="#card-packs" class="nav-link" data-page="card-packs">Card Packs</a></li>
+                    <li><a href="#shop" class="nav-link" data-page="shop">Shop</a></li>
+                    <li><a href="#my-deck" class="nav-link" data-page="my-deck">My Deck</a></li>
+                    <li><a href="#leaderboard" class="nav-link" data-page="leaderboard">Leaderboard</a></li>
+                    <li><a href="#token" class="nav-link" data-page="token">Token ($SLUG)</a></li>
+                </ul>
+            </nav>
+            <button id="connectWalletBtn" class="glow-button">Connect Wallet</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="page active">
+            <div class="container">
+                <div class="hero">
+                    <h2>Stake. Battle. Earn.</h2>
+                    <p>Enter the SolBattles Arena and prove your might!</p>
+                </div>
+
+                <div class="about-section">
+                    <h3>About $SLUG</h3>
+                    <p>$SLUG is the native utility token of SolBattles. It's essential for acquiring powerful NFT-style character cards, upgrading your existing collection, and participating in high-stakes battles against other players. Every $SLUG spent fuels the SolBattles ecosystem, creating a vibrant and rewarding experience.</p>
+
+                    <h3>NFT Character Cards</h3>
+                    <p>Collect unique and powerful NFT-style character cards, each with distinct stats and rarities. These aren't just pretty pictures; they're your warriors in the arena. From Common to Legendary, assemble an unbeatable deck to dominate your opponents.</p>
+
+                    <h3>How Battles Work</h3>
+                    <p>Players stake SOL to enter the battle arena. Select your three strongest character cards from your deck and face off against another player. Battles are turn-based, driven by your card's stats. The winner takes the staked SOL (minus a small platform fee), and earns bragging rights on the leaderboard!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="arena" class="page">
+            <div class="container">
+                <h2>Battle Arena</h2>
+                <div class="arena-setup">
+                    <div class="wallet-stake-input">
+                        <label for="solStake">SOL Stake:</label>
+                        <input type="number" id="solStake" value="0.05" step="0.01" min="0.01">
+                        <span>(Mock Wallet: 5.0 SOL)</span>
+                    </div>
+                    <h3>Select 3 Cards for Battle:</h3>
+                    <div id="battleCardSelection" class="card-selection-grid">
+                        </div>
+                    <button id="startBattleBtn" class="glow-button" disabled>Start Battle</button>
+                </div>
+
+                <div id="battleResults" class="battle-results-box" style="display: none;">
+                    <h3>Battle Log</h3>
+                    <div id="battleLog" class="battle-log">
+                        </div>
+                    <h3 id="battleWinner"></h3>
+                    <p id="battleLoser"></p>
+                    <button id="resetBattleBtn" class="glow-button">New Battle</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="card-packs" class="page">
+            <div class="container">
+                <h2>Card Packs</h2>
+                <button id="openPackBtn" class="glow-button">Open Pack (50 $SLUG)</button>
+                <div id="packOpeningAnimation" class="pack-opening-animation" style="display: none;">
+                    <img src="https://via.placeholder.com/200x200/533483/e0e0e0?text=PACK" alt="Card Pack" class="pack-image">
+                    <div class="reveal-message">Opening Pack...</div>
+                </div>
+                <div id="revealedCards" class="revealed-cards-grid">
+                    </div>
+            </div>
+        </section>
+
+        <section id="shop" class="page">
+            <div class="container">
+                <h2>Shop</h2>
+                <div id="shopGrid" class="shop-grid">
+                    </div>
+            </div>
+        </section>
+
+        <section id="my-deck" class="page">
+            <div class="container">
+                <h2>My Deck</h2>
+                <div class="deck-controls">
+                    <label for="sortDeck">Sort By:</label>
+                    <select id="sortDeck">
+                        <option value="none">None</option>
+                        <option value="rarity">Rarity</option>
+                        <option value="attack">Attack</option>
+                        <option value="defense">Defense</option>
+                        <option value="speed">Speed</option>
+                        <option value="luck">Luck</option>
+                    </select>
+                </div>
+                <div id="myDeckGrid" class="my-deck-grid">
+                    </div>
+                <div id="cardDetailPopup" class="card-detail-popup" style="display: none;">
+                    <div class="card-detail-content">
+                        <span class="close-popup">&times;</span>
+                        <h3 id="detailCardName"></h3>
+                        <img id="detailCardImage" src="" alt="Card Image">
+                        <p>Rarity: <span id="detailCardRarity"></span></p>
+                        <p>Attack: <span id="detailCardAttack"></span></p>
+                        <p>Defense: <span id="detailCardDefense"></span></p>
+                        <p>Speed: <span id="detailCardSpeed"></span></p>
+                        <p>Luck: <span id="detailCardLuck"></span></p>
+                        <div class="card-actions">
+                            <button class="glow-button simulate-button" data-action="upgrade">Upgrade (10 $SLUG)</button>
+                            <button class="glow-button simulate-button" data-action="fuse">Fuse (20 $SLUG)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="leaderboard" class="page">
+            <div class="container">
+                <h2>Leaderboard</h2>
+                <div class="leaderboard-table-container">
+                    <table id="leaderboardTable">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Wins</th>
+                                <th>Earnings (SOL)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody">
+                            </tbody>
+                    </table>
+                </div>
+                <p class="weekly-update-note">Leaderboard updates weekly! Next update in <span id="countdown"></span></p>
+            </div>
+        </section>
+
+        <section id="token" class="page">
+            <div class="container">
+                <h2>$SLUG Token</h2>
+                <div class="token-info">
+                    <h3>Utility of $SLUG</h3>
+                    <ul>
+                        <li><strong>Buy Characters:</strong> Acquire new and powerful character cards from the Shop.</li>
+                        <li><strong>Upgrade Cards:</strong> Enhance your existing cards' stats to make them stronger in battle.</li>
+                        <li><strong>Battle Entry:</strong> While SOL is staked for battles, $SLUG may be used for specific arena entries or special events in the future.</li>
+                    </ul>
+
+                    <h3>Tokenomics</h3>
+                    <p><strong>Total Supply:</strong> 1,000,000,000 $SLUG</p>
+                    <p><strong>Use Cases:</strong> In-game currency, governance (future), staking rewards (future).</p>
+                    <p><strong>Basic Distribution:</strong></p>
+                    <ul>
+                        <li>50% Ecosystem & Rewards</li>
+                        <li>20% Liquidity & Exchange Listings</li>
+                        <li>15% Team & Advisors</li>
+                        <li>10% Marketing & Partnerships</li>
+                        <li>5% Community Treasury</li>
+                    </ul>
+
+                    <div class="token-actions">
+                        <button id="buySlugBtn" class="glow-button">Buy $SLUG (Simulated)</button>
+                        <button id="stakeSlugBtn" class="glow-button">Stake $SLUG (Simulated)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 SolBattles. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="universalPopup" class="universal-popup" style="display: none;">
+        <div class="universal-popup-content">
+            <span class="close-universal-popup">&times;</span>
+            <p id="universalPopupMessage"></p>
+            <button class="glow-button" onclick="document.getElementById('universalPopup').style.display='none'">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Global State Variables ---
+        let currentSLUG = 1000; // Mock SLUG balance
+        let ownedCards = []; // Array to hold player's owned cards
+        let selectedBattleCards = []; // Cards chosen for battle
+
+        // --- Data Definitions (Mock Data) ---
+
+        // Placeholder images - Using via.placeholder.com for direct embedding
+        const PLACEHOLDER_CARD_IMAGES = [
+            'https://via.placeholder.com/180x250/FF5733/FFFFFF?text=CHAR_01',
+            'https://via.placeholder.com/180x250/33FF57/FFFFFF?text=CHAR_02',
+            'https://via.placeholder.com/180x250/3357FF/FFFFFF?text=CHAR_03',
+            'https://via.placeholder.com/180x250/FF33DA/FFFFFF?text=CHAR_04',
+            'https://via.placeholder.com/180x250/33FFF5/FFFFFF?text=CHAR_05',
+            'https://via.placeholder.com/180x250/FF8C33/FFFFFF?text=CHAR_06',
+            'https://via.placeholder.com/180x250/8C33FF/FFFFFF?text=CHAR_07',
+            'https://via.placeholder.com/180x250/33FF8C/FFFFFF?text=CHAR_08',
+            'https://via.placeholder.com/180x250/FF338C/FFFFFF?text=CHAR_09',
+            'https://via.placeholder.com/180x250/8CFF33/FFFFFF?text=CHAR_10',
+            // Add more as needed
+        ];
+
+        // Placeholder for a generic card back
+        const CARD_BACK_IMAGE = 'https://via.placeholder.com/180x250/533483/e0e0e0?text=CARD+BACK';
+
+
+        const CHARACTER_NAMES = [
+            "Shadowblade", "Firebrand", "Voidwalker", "Ironclad", "Stormbringer",
+            "Grimfang", "Soulreaver", "Nightshade", "Frostbite", "Sunshard",
+            "Cosmic Crusher", "Degen Dragon", "Pixel Paladin", "Crypto Knight", "Solana Sage"
+        ];
+
+        const RARITIES = ["Common", "Rare", "Epic", "Legendary"];
+        const RARITY_WEIGHTS = { "Common": 0.6, "Rare": 0.25, "Epic": 0.1, "Legendary": 0.05 };
+
+        // Shop inventory (mock)
+        const shopInventory = [
+            { id: 'shop001', name: 'Mystic Monk', img: PLACEHOLDER_CARD_IMAGES[0], attack: 60, defense: 40, speed: 50, luck: 30, rarity: 'Rare', price: 200 },
+            { id: 'shop002', name: 'Cyber Rogue', img: PLACEHOLDER_CARD_IMAGES[1], attack: 70, defense: 30, speed: 80, luck: 40, rarity: 'Epic', price: 450 },
+            { id: 'shop003', name: 'Stone Golem', img: PLACEHOLDER_CARD_IMAGES[2], attack: 80, defense: 90, speed: 10, luck: 10, rarity: 'Rare', price: 250 },
+            { id: 'shop004', name: 'Arcane Archer', img: PLACEHOLDER_CARD_IMAGES[3], attack: 55, defense: 35, speed: 70, luck: 60, rarity: 'Common', price: 100 },
+            { id: 'shop005', name: 'Desert Scavenger', img: PLACEHOLDER_CARD_IMAGES[4], attack: 45, defense: 45, speed: 55, luck: 70, rarity: 'Common', price: 90 },
+            { id: 'shop006', name: 'Star-Forged Sentinel', img: PLACEHOLDER_CARD_IMAGES[5], attack: 90, defense: 80, speed: 20, luck: 30, rarity: 'Legendary', price: 800 },
+            { id: 'shop007', name: 'Deep Sea Diver', img: PLACEHOLDER_CARD_IMAGES[6], attack: 65, defense: 60, speed: 45, luck: 50, rarity: 'Rare', price: 220 },
+            { id: 'shop008', name: 'Galactic Gunslinger', img: PLACEHOLDER_CARD_IMAGES[7], attack: 75, defense: 25, speed: 90, luck: 65, rarity: 'Epic', price: 500 },
+        ];
+
+        // Initial player cards (for testing My Deck/Arena)
+        function initializeOwnedCards() {
+            ownedCards = [
+                { id: 'player001', name: 'Basic Brawler', img: PLACEHOLDER_CARD_IMAGES[8], attack: 50, defense: 50, speed: 50, luck: 50, rarity: 'Common', level: 1 },
+                { id: 'player002', name: 'Forest Spirit', img: PLACEHOLDER_CARD_IMAGES[9], attack: 40, defense: 60, speed: 45, luck: 55, rarity: 'Rare', level: 1 },
+                { id: 'player003', name: 'Knight Protector', img: PLACEHOLDER_CARD_IMAGES[0], attack: 65, defense: 75, speed: 30, luck: 20, rarity: 'Epic', level: 1 },
+                { id: 'player004', name: 'Speed Demon', img: PLACEHOLDER_CARD_IMAGES[1], attack: 70, defense: 30, speed: 90, luck: 40, rarity: 'Rare', level: 1 },
+                { id: 'player005', name: 'Lucky Charm', img: PLACEHOLDER_CARD_IMAGES[2], attack: 30, defense: 30, speed: 60, luck: 90, rarity: 'Common', level: 1 },
+                { id: 'player006', name: 'Master Mage', img: PLACEHOLDER_CARD_IMAGES[3], attack: 80, defense: 35, speed: 50, luck: 60, rarity: 'Legendary', level: 1 },
+            ];
+        }
+
+        // Mock Leaderboard Data
+        let leaderboardData = [
+            { rank: 1, username: 'CryptoKing', wins: 150, earnings: 75.25 },
+            { rank: 2, username: 'NFT_God', wins: 145, earnings: 70.10 },
+            { rank: 3, username: 'DegenWarrior', wins: 130, earnings: 62.50 },
+            { rank: 4, username: 'SolanaChamp', wins: 120, earnings: 58.00 },
+            { rank: 5, username: 'BlockchainBeast', wins: 110, earnings: 50.75 },
+            { rank: 6, username: 'PixelPirate', wins: 95, earnings: 45.00 },
+            { rank: 7, username: 'TokenTamer', wins: 88, earnings: 40.20 },
+            { rank: 8, username: 'MetaMaverick', wins: 80, earnings: 35.80 },
+            { rank: 9, username: 'CardConjurer', wins: 75, earnings: 32.10 },
+            { rank: 10, username: 'EliteEnder', wins: 70, earnings: 29.50 },
+        ];
+
+        // --- Utility Functions ---
+
+        /**
+         * Generates a unique ID for a card.
+         * @returns {string} Unique card ID.
+         */
+        function generateCardId() {
+            return 'card_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        /**
+         * Gets a random element from an array.
+         * @param {Array} arr - The array to pick from.
+         * @returns {*} A random element from the array.
+         */
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        /**
+         * Generates a random card with stats and rarity.
+         * @returns {object} A new card object.
+         */
+        function generateRandomCard() {
+            const rarity = getRandomRarity();
+            const baseStats = {
+                'Common': { min: 30, max: 60 },
+                'Rare': { min: 50, max: 80 },
+                'Epic': { min: 70, max: 95 },
+                'Legendary': { min: 85, max: 100 }
+            };
+            const statsRange = baseStats[rarity];
+
+            const generateStat = () => Math.floor(Math.random() * (statsRange.max - statsRange.min + 1)) + statsRange.min;
+
+            return {
+                id: generateCardId(),
+                name: getRandomElement(CHARACTER_NAMES),
+                img: getRandomElement(PLACEHOLDER_CARD_IMAGES),
+                attack: generateStat(),
+                defense: generateStat(),
+                speed: generateStat(),
+                luck: generateStat(),
+                rarity: rarity,
+                level: 1 // All new cards start at level 1
+            };
+        }
+
+        /**
+         * Determines a random rarity based on weights.
+         * @returns {string} The determined rarity.
+         */
+        function getRandomRarity() {
+            let sum = 0;
+            const r = Math.random();
+            for (const rarity of RARITIES) {
+                sum += RARITY_WEIGHTS[rarity];
+                if (r <= sum) {
+                    return rarity;
+                }
+            }
+            return "Common"; // Fallback
+        }
+
+        /**
+         * Creates an HTML string for a card.
+         * @param {object} card - The card object.
+         * @param {boolean} showBuyButton - Whether to show a buy button (for shop).
+         * @param {boolean} isSelectableForBattle - Whether the card can be selected for battle.
+         * @returns {string} HTML string for the card.
+         */
+        function createCardHTML(card, showBuyButton = false, isSelectableForBattle = false) {
+            const buyButtonHTML = showBuyButton ? `<button class="glow-button buy-button" data-card-id="${card.id}">Buy (${card.price} $SLUG)</button>` : '';
+            const levelHTML = card.level ? `<p>Level: ${card.level}</p>` : '';
+            const selectableClass = isSelectableForBattle ? 'selectable-card' : '';
+            const selectedClass = selectedBattleCards.some(c => c.id === card.id) ? 'selected' : '';
+
+            return `
+                <div class="card ${selectableClass} ${selectedClass}" data-card-id="${card.id}">
+                    <img src="${card.img}" alt="${card.name}">
+                    <h4>${card.name}</h4>
+                    <p class="rarity ${card.rarity.toLowerCase()}">${card.rarity}</p>
+                    ${levelHTML}
+                    <div class="card-stats">
+                        <span class="card-stat">ATK: ${card.attack}</span>
+                        <span class="card-stat">DEF: ${card.defense}</span>
+                        <span class="card-stat">SPD: ${card.speed}</span>
+                        <span class="card-stat">LCK: ${card.luck}</span>
+                    </div>
+                    ${buyButtonHTML}
+                </div>
+            `;
+        }
+
+        /**
+         * Displays a universal popup message.
+         * @param {string} message - The message to display.
+         */
+        function showUniversalPopup(message) {
+            const popup = document.getElementById('universalPopup');
+            document.getElementById('universalPopupMessage').textContent = message;
+            popup.style.display = 'flex';
+            // Close popup on click outside or on 'X' button
+            popup.querySelector('.close-universal-popup').onclick = () => popup.style.display = 'none';
+            popup.onclick = (e) => {
+                if (e.target === popup) {
+                    popup.style.display = 'none';
+                }
+            };
+        }
+
+        // --- Page Rendering Functions ---
+
+        /**
+         * Renders the shop grid with available cards.
+         */
+        function renderShop() {
+            const shopGrid = document.getElementById('shopGrid');
+            shopGrid.innerHTML = ''; // Clear previous items
+
+            shopInventory.forEach(card => {
+                shopGrid.innerHTML += createCardHTML(card, true);
+            });
+
+            // Add event listeners for buy buttons
+            shopGrid.querySelectorAll('.buy-button').forEach(button => {
+                button.onclick = (event) => {
+                    const cardId = event.target.dataset.cardId;
+                    handleBuyCard(cardId);
+                };
+            });
+        }
+
+        /**
+         * Renders the player's deck.
+         * @param {string} sortBy - The attribute to sort cards by.
+         */
+        function renderMyDeck(sortBy = 'none') {
+            const myDeckGrid = document.getElementById('myDeckGrid');
+            myDeckGrid.innerHTML = ''; // Clear previous items
+
+            let cardsToDisplay = [...ownedCards]; // Create a copy to sort
+
+            if (sortBy !== 'none') {
+                cardsToDisplay.sort((a, b) => {
+                    if (sortBy === 'rarity') {
+                        const rarityOrder = { 'Common': 1, 'Rare': 2, 'Epic': 3, 'Legendary': 4 };
+                        return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+                    }
+                    return b[sortBy] - a[sortBy]; // Sort descending for stats
+                });
+            }
+
+            if (cardsToDisplay.length === 0) {
+                myDeckGrid.innerHTML = '<p>Your deck is empty! Visit the Shop or Card Packs to get new cards.</p>';
+                return;
+            }
+
+            cardsToDisplay.forEach(card => {
+                myDeckGrid.innerHTML += createCardHTML(card);
+            });
+
+            // Add event listeners for card details popup
+            myDeckGrid.querySelectorAll('.card').forEach(cardElement => {
+                cardElement.onclick = (event) => {
+                    const cardId = event.currentTarget.dataset.cardId;
+                    const card = ownedCards.find(c => c.id === cardId);
+                    if (card) {
+                        showCardDetail(card);
+                    }
+                };
+            });
+        }
+
+        /**
+         * Shows a detailed view of a card in a popup.
+         * @param {object} card - The card object to display.
+         */
+        function showCardDetail(card) {
+            const popup = document.getElementById('cardDetailPopup');
+            document.getElementById('detailCardName').textContent = card.name;
+            document.getElementById('detailCardImage').src = card.img;
+            document.getElementById('detailCardRarity').textContent = card.rarity;
+            document.getElementById('detailCardRarity').className = `rarity ${card.rarity.toLowerCase()}`;
+            document.getElementById('detailCardAttack').textContent = card.attack;
+            document.getElementById('detailCardDefense').textContent = card.defense;
+            document.getElementById('detailCardSpeed').textContent = card.speed;
+            document.getElementById('detailCardLuck').textContent = card.luck;
+
+            popup.style.display = 'flex';
+
+            // Add event listeners for simulated actions
+            popup.querySelectorAll('.simulate-button').forEach(button => {
+                button.onclick = (e) => {
+                    const action = e.target.dataset.action;
+                    if (action === 'upgrade') {
+                        handleUpgradeCard(card.id);
+                    } else if (action === 'fuse') {
+                        handleFuseCard(card.id);
+                    }
+                    popup.style.display = 'none'; // Close popup after action
+                };
+            });
+
+            popup.querySelector('.close-popup').onclick = () => popup.style.display = 'none';
+            popup.onclick = (e) => {
+                if (e.target === popup) {
+                    popup.style.display = 'none';
+                }
+            };
+        }
+
+
+        /**
+         * Renders the cards available for selection in the Battle Arena.
+         */
+        function renderArenaCardSelection() {
+            const battleCardSelection = document.getElementById('battleCardSelection');
+            battleCardSelection.innerHTML = ''; // Clear previous items
+            selectedBattleCards = []; // Reset selected cards on page load
+
+            if (ownedCards.length === 0) {
+                battleCardSelection.innerHTML = '<p>You need cards to battle! Visit My Deck or the Shop.</p>';
+                document.getElementById('startBattleBtn').disabled = true;
+                return;
+            }
+
+            ownedCards.forEach(card => {
+                battleCardSelection.innerHTML += createCardHTML(card, false, true);
+            });
+
+            // Add click listeners for selection
+            battleCardSelection.querySelectorAll('.selectable-card').forEach(cardElement => {
+                cardElement.onclick = (event) => {
+                    const cardId = event.currentTarget.dataset.cardId;
+                    const card = ownedCards.find(c => c.id === cardId);
+
+                    if (selectedBattleCards.some(c => c.id === cardId)) {
+                        // Deselect
+                        selectedBattleCards = selectedBattleCards.filter(c => c.id !== cardId);
+                        event.currentTarget.classList.remove('selected');
+                    } else if (selectedBattleCards.length < 3) {
+                        // Select
+                        selectedBattleCards.push(card);
+                        event.currentTarget.classList.add('selected');
+                    } else {
+                        showUniversalPopup('You can only select up to 3 cards for battle.');
+                    }
+                    // Enable/disable start battle button
+                    document.getElementById('startBattleBtn').disabled = selectedBattleCards.length !== 3;
+                };
+            });
+            document.getElementById('startBattleBtn').disabled = selectedBattleCards.length !== 3; // Initial state
+        }
+
+
+        /**
+         * Renders the leaderboard table.
+         */
+        function renderLeaderboard() {
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            leaderboardBody.innerHTML = '';
+
+            leaderboardData.forEach(player => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${player.rank}</td>
+                    <td>${player.username}</td>
+                    <td>${player.wins}</td>
+                    <td>${player.earnings.toFixed(2)} SOL</td>
+                `;
+                leaderboardBody.appendChild(row);
+            });
+            startLeaderboardCountdown();
+        }
+
+
+        // --- Event Handlers and Core Logic ---
+
+        /**
+         * Handles wallet connection simulation.
+         */
+        document.getElementById('connectWalletBtn').onclick = () => {
+            showUniversalPopup('Connecting to wallet... (Simulated)\n\nWallet connected! You have a mock balance of 5.0 SOL.');
+        };
+
+        /**
+         * Handles "Open Pack" button click.
+         */
+        document.getElementById('openPackBtn').onclick = () => {
+            if (currentSLUG < 50) {
+                showUniversalPopup('Not enough $SLUG to open a pack! You need 50 $SLUG.');
+                return;
+            }
+
+            currentSLUG -= 50; // Deduct SLUG
+            updateSLUGDisplay();
+            showUniversalPopup('You spent 50 $SLUG to open a pack!');
+
+            const packAnimationDiv = document.getElementById('packOpeningAnimation');
+            const revealedCardsDiv = document.getElementById('revealedCards');
+            revealedCardsDiv.innerHTML = '';
+            packAnimationDiv.style.display = 'flex'; // Show animation
+
+            // Simulate pack opening animation
+            setTimeout(() => {
+                packAnimationDiv.style.display = 'none'; // Hide animation
+                const newCards = [];
+                for (let i = 0; i < 3; i++) {
+                    const newCard = generateRandomCard();
+                    ownedCards.push(newCard); // Add to player's deck
+                    newCards.push(newCard);
+                }
+
+                // Display revealed cards with flip animation
+                newCards.forEach((card, index) => {
+                    const cardContainer = document.createElement('div');
+                    cardContainer.className = 'card-flip-container'; // For flip animation
+                    cardContainer.style.width = '200px'; /* Match card width from CSS */
+                    cardContainer.style.height = '300px'; /* Match card height from CSS */
+
+                    // Initial state: showing card back
+                    cardContainer.innerHTML = `
+                        <div class="card-front">
+                            <img src="${CARD_BACK_IMAGE}" alt="Card Back">
+                        </div>
+                        <div class="card-back">
+                            <img src="${card.img}" alt="${card.name}">
+                            <h4>${card.name}</h4>
+                            <p class="rarity ${card.rarity.toLowerCase()}">${card.rarity}</p>
+                            <div class="card-stats">
+                                <span class="card-stat">ATK: ${card.attack}</span>
+                                <span class="card-stat">DEF: ${card.defense}</span>
+                                <span class="card-stat">SPD: ${card.speed}</span>
+                                <span class="card-stat">LCK: ${card.luck}</span>
+                            </div>
+                        </div>
+                    `;
+                    revealedCardsDiv.appendChild(cardContainer);
+
+                    // Trigger flip animation with a staggered delay
+                    setTimeout(() => {
+                        cardContainer.style.transform = 'rotateY(180deg)';
+                    }, index * 200); // Stagger cards by 200ms
+                });
+                showUniversalPopup('You received 3 new cards!');
+            }, 2000); // 2 seconds animation for pack opening
+        };
+
+
+        /**
+         * Handles buying a card from the shop.
+         * @param {string} cardId - The ID of the card to buy.
+         */
+        function handleBuyCard(cardId) {
+            const cardToBuy = shopInventory.find(card => card.id === cardId);
+            if (cardToBuy) {
+                if (currentSLUG >= cardToBuy.price) {
+                    currentSLUG -= cardToBuy.price;
+                    ownedCards.push({ ...cardToBuy, id: generateCardId(), level: 1 }); // Add to owned cards, give new ID
+                    updateSLUGDisplay();
+                    showUniversalPopup(`Successfully purchased ${cardToBuy.name} for ${cardToBuy.price} $SLUG! It's now in your deck.`);
+                    renderShop(); // Re-render shop to reflect potential removal (not implemented here, but good practice)
+                } else {
+                    showUniversalPopup(`Not enough $SLUG to buy ${cardToBuy.name}! You need ${cardToBuy.price} $SLUG.`);
+                }
+            }
+        }
+
+        /**
+         * Handles the "Upgrade" button click for a card.
+         * @param {string} cardId - The ID of the card to upgrade.
+         */
+        function handleUpgradeCard(cardId) {
+            const cardToUpgrade = ownedCards.find(card => card.id === cardId);
+            if (cardToUpgrade) {
+                if (currentSLUG >= 10) { // Mock upgrade cost
+                    currentSLUG -= 10;
+                    cardToUpgrade.level = (cardToUpgrade.level || 1) + 1; // Increment level
+                    cardToUpgrade.attack += 5; // Example stat increase
+                    cardToUpgrade.defense += 5;
+                    updateSLUGDisplay();
+                    showUniversalPopup(`${cardToUpgrade.name} upgraded to Level ${cardToUpgrade.level}! Stats increased.`);
+                    renderMyDeck(document.getElementById('sortDeck').value); // Re-render deck
+                } else {
+                    showUniversalPopup('Not enough $SLUG to upgrade! You need 10 $SLUG.');
+                }
+            }
+        }
+
+        /**
+         * Handles the "Fuse" button click for a card.
+         * @param {string} cardId - The ID of the card to fuse.
+         */
+        function handleFuseCard(cardId) {
+            // In a real game, fusion might require multiple cards and specific conditions.
+            // Here, we'll just simulate a success message and SLUG deduction.
+            const cardToFuse = ownedCards.find(card => card.id === cardId);
+            if (cardToFuse) {
+                if (currentSLUG >= 20) { // Mock fuse cost
+                    currentSLUG -= 20;
+                    // Simulate removal of the card or creation of a new one
+                    // For simplicity, just remove it here
+                    ownedCards = ownedCards.filter(c => c.id !== cardId);
+                    updateSLUGDisplay();
+                    showUniversalPopup(`${cardToFuse.name} has been fused! (Simulated - card removed from deck).`);
+                    renderMyDeck(document.getElementById('sortDeck').value); // Re-render deck
+                } else {
+                    showUniversalPopup('Not enough $SLUG to fuse! You need 20 $SLUG.');
+                }
+            }
+        }
+
+
+        /**
+         * Updates the display of the current $SLUG balance.
+         */
+        function updateSLUGDisplay() {
+            // You might want to add a visible SLUG balance somewhere on the page
+            // For now, it's only reflected in popups.
+            console.log(`Current $SLUG: ${currentSLUG}`);
+        }
+
+        /**
+         * Simulates a battle between the selected cards and a random opponent team.
+         */
+        document.getElementById('startBattleBtn').onclick = () => {
+            if (selectedBattleCards.length !== 3) {
+                showUniversalPopup('Please select exactly 3 cards to start a battle.');
+                return;
+            }
+
+            const solStake = parseFloat(document.getElementById('solStake').value);
+            if (isNaN(solStake) || solStake <= 0) {
+                showUniversalPopup('Please enter a valid SOL stake amount.');
+                return;
+            }
+            // Simulate SOL deduction/holding
+            showUniversalPopup(`Staking ${solStake.toFixed(2)} SOL to enter battle! Simulating match...`);
+
+            const battleResultsBox = document.getElementById('battleResults');
+            const battleLog = document.getElementById('battleLog');
+            const battleWinner = document.getElementById('battleWinner');
+            const battleLoser = document.getElementById('battleLoser');
+
+            battleLog.innerHTML = '';
+            battleWinner.textContent = '';
+            battleLoser.textContent = '';
+            battleResultsBox.style.display = 'block';
+
+            // Generate mock opponent cards
+            const opponentCards = [];
+            for (let i = 0; i < 3; i++) {
+                opponentCards.push(generateRandomCard());
+            }
+
+            let playerTeam = [...selectedBattleCards];
+            let opponentTeam = [...opponentCards];
+
+            // Initialize currentHealth for all participants
+            playerTeam.forEach(card => card.currentHealth = 100);
+            opponentTeam.forEach(card => card.currentHealth = 100);
+
+
+            battleLog.innerHTML += '<p><strong>--- Battle Start ---</strong></p>';
+            battleLog.innerHTML += `<p>Your team: ${playerTeam.map(c => c.name).join(', ')}</p>`;
+            battleLog.innerHTML += `<p>Opponent team: ${opponentTeam.map(c => c.name).join(', ')}</p>`;
+
+            let turn = 1;
+            let maxTurns = 15; // Prevent excessively long loops
+
+            const battleTurnsInterval = setInterval(() => {
+                if (playerTeam.length === 0 || opponentTeam.length === 0 || turn > maxTurns) {
+                    clearInterval(battleTurnsInterval);
+                    // Determine winner
+                    if (playerTeam.length > 0 && opponentTeam.length === 0) {
+                        battleWinner.textContent = 'YOU WIN!';
+                        battleWinner.style.color = '#4CAF50';
+                        battleLoser.textContent = `You earned ${(solStake * 0.95).toFixed(2)} SOL!`; // Mock 5% fee
+                        battleLog.innerHTML += '<p class="winner-message">Congratulations! Your team emerged victorious!</p>';
+                        // Simulate updating leaderboard for player
+                        const playerIndex = leaderboardData.findIndex(p => p.username === 'You');
+                        if (playerIndex > -1) {
+                            leaderboardData[playerIndex].wins += 1;
+                            leaderboardData[playerIndex].earnings += (solStake * 0.95);
+                        } else {
+                            leaderboardData.push({ rank: leaderboardData.length + 1, username: 'You', wins: 1, earnings: (solStake * 0.95) });
+                        }
+                        sortLeaderboard();
+                    } else if (opponentTeam.length > 0 && playerTeam.length === 0) {
+                        battleWinner.textContent = 'YOU LOSE!';
+                        battleWinner.style.color = '#F44336';
+                        battleLoser.textContent = `You lost ${solStake.toFixed(2)} SOL. Better luck next time!`;
+                        battleLog.innerHTML += '<p class="loser-message">Your team was defeated. Train harder!</p>';
+                    } else { // Draw or max turns reached
+                        battleWinner.textContent = 'IT\'S A DRAW!';
+                        battleWinner.style.color = '#FFC107';
+                        battleLoser.textContent = 'No one takes the prize. Prepare for a rematch!';
+                        battleLog.innerHTML += '<p>The battle was a fierce draw. No clear winner.</p>';
+                    }
+                    // Scroll to bottom of battle log
+                    battleLog.scrollTop = battleLog.scrollHeight;
+
+                    // Reset selected cards and button state
+                    selectedBattleCards.forEach(card => {
+                        const cardElement = document.querySelector(`.selectable-card[data-card-id="${card.id}"]`);
+                        if (cardElement) {
+                            cardElement.classList.remove('selected');
+                        }
+                    });
+                    selectedBattleCards = [];
+                    document.getElementById('startBattleBtn').disabled = true;
+                    return;
+                }
+
+                battleLog.innerHTML += `<p><strong>--- Turn ${turn} ---</strong></p>`;
+
+                // Player's turn to attack
+                if (playerTeam.length > 0) {
+                    const playerAttacker = getRandomElement(playerTeam);
+                    const opponentDefender = getRandomElement(opponentTeam);
+
+                    const playerDamage = Math.max(0, Math.round(playerAttacker.attack * (1 + (playerAttacker.luck - 50) / 100) - opponentDefender.defense * (1 - (opponentDefender.luck - 50) / 100) * 0.5));
+                    opponentDefender.currentHealth -= playerDamage; // Simulate health
+
+                    battleLog.innerHTML += `<p>🛡️ ${playerAttacker.name} attacks ${opponentDefender.name} for ${playerDamage} damage!`;
+
+                    if (opponentDefender.currentHealth <= 0) {
+                        battleLog.innerHTML += `<p class="loser-message">💀 ${opponentDefender.name} has been defeated!</p>`;
+                        opponentTeam = opponentTeam.filter(c => c.id !== opponentDefender.id);
+                    } else {
+                        battleLog.innerHTML += `<p>${opponentDefender.name} health: ${opponentDefender.currentHealth.toFixed(0)}</p>`;
+                    }
+                }
+
+                if (opponentTeam.length === 0) return; // Check if opponent is defeated immediately after player's turn
+
+                // Opponent's turn to attack
+                if (opponentTeam.length > 0) {
+                    const opponentAttacker = getRandomElement(opponentTeam);
+                    const playerDefender = getRandomElement(playerTeam);
+
+                    const opponentDamage = Math.max(0, Math.round(opponentAttacker.attack * (1 + (opponentAttacker.luck - 50) / 100) - playerDefender.defense * (1 - (playerDefender.luck - 50) / 100) * 0.5));
+                    playerDefender.currentHealth -= opponentDamage;
+
+                    battleLog.innerHTML += `<p>⚔️ ${opponentAttacker.name} attacks ${playerDefender.name} for ${opponentDamage} damage!`;
+
+                    if (playerDefender.currentHealth <= 0) {
+                        battleLog.innerHTML += `<p class="loser-message">💀 ${playerDefender.name} has been defeated!</p>`;
+                        playerTeam = playerTeam.filter(c => c.id !== playerDefender.id);
+                    } else {
+                        battleLog.innerHTML += `<p>${playerDefender.name} health: ${playerDefender.currentHealth.toFixed(0)}</p>`;
+                    }
+                }
+
+                battleLog.scrollTop = battleLog.scrollHeight; // Scroll to bottom after each turn
+                turn++;
+            }, 1000); // Each turn takes 1 second
+        };
+
+
+        document.getElementById('resetBattleBtn').onclick = () => {
+            document.getElementById('battleResults').style.display = 'none';
+            renderArenaCardSelection(); // Reset card selection for new battle
+        };
+
+
+        /**
+         * Handles mock "Buy $SLUG" button click.
+         */
+        document.getElementById('buySlugBtn').onclick = () => {
+            showUniversalPopup('Simulating $SLUG purchase...\n\nTransaction successful! You gained 500 $SLUG. (Mock)');
+            currentSLUG += 500;
+            updateSLUGDisplay();
+        };
+
+        /**
+         * Handles mock "Stake $SLUG" button click.
+         */
+        document.getElementById('stakeSlugBtn').onclick = () => {
+            showUniversalPopup('Simulating $SLUG staking...\n\nYour $SLUG has been staked! You will earn rewards. (Mock)');
+        };
+
+        /**
+         * Sorts the leaderboard data and updates ranks.
+         */
+        function sortLeaderboard() {
+            leaderboardData.sort((a, b) => b.wins - a.wins || b.earnings - a.earnings); // Sort by wins, then earnings
+            leaderboardData.forEach((player, index) => {
+                player.rank = index + 1;
+            });
+        }
+
+        /**
+         * Simulates weekly leaderboard update with animated rank changes.
+         */
+        function updateLeaderboardWeekly() {
+            // Store current state for comparison
+            const oldLeaderboardData = JSON.parse(JSON.stringify(leaderboardData));
+
+            // Simulate some changes (e.g., random wins, new player, existing player drop)
+            leaderboardData.forEach(player => {
+                player.wins += Math.floor(Math.random() * 5); // Add random wins
+                player.earnings = parseFloat((player.earnings + (Math.random() * 5)).toFixed(2)); // Add random earnings
+            });
+
+            // Add a potential new player
+            if (Math.random() > 0.7) { // 30% chance of new player
+                leaderboardData.push({ rank: 0, username: 'Newbie' + Math.floor(Math.random() * 100), wins: Math.floor(Math.random() * 10), earnings: parseFloat((Math.random() * 5).toFixed(2)) });
+            }
+
+            sortLeaderboard(); // Re-sort after changes
+
+            const leaderboardBody = document.getElementById('leaderboardBody');
+            leaderboardBody.innerHTML = ''; // Clear current table
+
+            leaderboardData.forEach(player => {
+                const oldPlayer = oldLeaderboardData.find(p => p.username === player.username);
+                let rankChangeIndicator = '';
+                if (oldPlayer) {
+                    if (player.rank < oldPlayer.rank) {
+                        rankChangeIndicator = '<span class="rank-change up">⬆️</span>';
+                    } else if (player.rank > oldPlayer.rank) {
+                        rankChangeIndicator = '<span class="rank-change down">⬇️</span>';
+                    }
+                } else { // New player
+                    rankChangeIndicator = '<span class="rank-change new">✨ New!</span>';
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${player.rank}${rankChangeIndicator}</td>
+                    <td>${player.username}</td>
+                    <td>${player.wins}</td>
+                    <td>${player.earnings.toFixed(2)} SOL</td>
+                `;
+                leaderboardBody.appendChild(row);
+            });
+            showUniversalPopup('Leaderboard has been updated!');
+        }
+
+        let countdownInterval;
+        /**
+         * Starts the weekly leaderboard countdown.
+         */
+        function startLeaderboardCountdown() {
+            clearInterval(countdownInterval); // Clear any existing interval
+            const countdownElement = document.getElementById('countdown');
+            let secondsLeft = 7 * 24 * 60 * 60; // 7 days in seconds (mock)
+
+            function updateCountdown() {
+                const days = Math.floor(secondsLeft / (24 * 60 * 60));
+                const hours = Math.floor((secondsLeft % (24 * 60 * 60)) / (60 * 60));
+                const minutes = Math.floor((secondsLeft % (60 * 60)) / 60);
+                const seconds = secondsLeft % 60;
+
+                countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+                if (secondsLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.textContent = 'Updating now...';
+                    updateLeaderboardWeekly();
+                    secondsLeft = 7 * 24 * 60 * 60; // Reset for next week
+                    setTimeout(startLeaderboardCountdown, 5000); // Restart countdown after update
+                } else {
+                    secondsLeft--;
+                }
+            }
+            updateCountdown(); // Call immediately to avoid initial delay
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+
+        // --- Page Navigation Logic ---
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetPageId = e.target.dataset.page;
+
+                // Deactivate all pages and nav links
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                document.querySelectorAll('.nav-link').forEach(navLink => navLink.classList.remove('active'));
+
+                // Activate the clicked page and nav link
+                document.getElementById(targetPageId).classList.add('active');
+                e.target.classList.add('active');
+
+                // Render content specific to the page
+                if (targetPageId === 'shop') {
+                    renderShop();
+                } else if (targetPageId === 'my-deck') {
+                    renderMyDeck(document.getElementById('sortDeck').value);
+                } else if (targetPageId === 'arena') {
+                    renderArenaCardSelection();
+                    document.getElementById('battleResults').style.display = 'none'; // Hide results on entering arena
+                } else if (targetPageId === 'leaderboard') {
+                    renderLeaderboard();
+                }
+            });
+        });
+
+        // My Deck sorting functionality
+        document.getElementById('sortDeck').addEventListener('change', (e) => {
+            renderMyDeck(e.target.value);
+        });
+
+
+        // --- Initial Setup on Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeOwnedCards(); // Populate initial cards
+            updateSLUGDisplay(); // Display initial SLUG balance
+            // Set initial page to home and render it
+            document.getElementById('home').classList.add('active');
+            document.querySelector('.nav-link[data-page="home"]').classList.add('active');
+        });
+    </script>
+</body>
+</html>
