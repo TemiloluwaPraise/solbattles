@@ -1193,7 +1193,7 @@
                         <div class="roadmap-phase">
                             <h4>Phase 1: Launch & Core Gameplay</h4>
                             <ul>
-                                <li class="text-animate-in">Website Launch (Current)</li>
+                                <li class="text-animate-in">Website Launch </li>
                                 <li class="text-animate-in">Core Battle Engine Implementation</li>
                                 <li class="text-animate-in">NFT Card Generation & Marketplace Integration</li>
                                 <li class="text-animate-in">Basic Leaderboard System</li>
@@ -1393,8 +1393,7 @@
                 <div class="docs-section section-animate-in">
                     <p class="text-animate-in">Welcome to the SolBattles Documentation! Here you'll find everything you need to know about the game, from basic rules to advanced strategies, tokenomics, and blockchain integration.</p>
                     <p class="text-animate-in">We are constantly updating our documentation. If you have any questions, please join our community channels!</p>
-                    <button class="glow-button primary-button text-animate-in">Read Full Whitepaper</button>
-                    <button class="glow-button inverted-button text-animate-in" style="margin-left: 15px;">Join Discord Community</button>
+                    <button class="glow-button primary-button text-animate-in">Read Full Documentation</button>
                 </div>
             </div>
         </section>
@@ -1426,7 +1425,7 @@
 
     <script>
         // --- Global State & Data ---
-        let currentSLUG = 1000, ownedCards = [], selectedBattleCards = [], isWalletConnected = false;
+        let currentSLUG = 5000, ownedCards = [], selectedBattleCards = [], isWalletConnected = false;
         let playerHealth, opponentHealth; // Track health during battle
         let battleInterval; // To manage the battle loop
         let currentRoundPlayerCard, currentRoundOpponentCard; // Track current cards in battle
@@ -1434,7 +1433,7 @@
 
         const MOCK_WALLET_ADDRESS = "0xS0L...ddr3ss";
         const PLACEHOLDER_CARD_IMAGES = ['https://via.placeholder.com/180x250/FF5733/FFFFFF?text=CHAR_01', 'https://via.placeholder.com/180x250/00BFFF/FFFFFF?text=CHAR_02', 'https://via.placeholder.com/180x250/8A2BE2/FFFFFF?text=CHAR_03', 'https://via.placeholder.com/180x250/3CE6BC/FFFFFF?text=CHAR_04', 'https://via.placeholder.com/180x250/E94560/FFFFFF?text=CHAR_05'];
-        const CARD_BACK_IMAGE = 'https://sdmntprwestus2.oaiusercontent.com/files/00000000-a838-61f8-88af-6dec43f37aaa/raw?se=2025-06-22T10%3A59%3A28Z&sp=r&sv=2024-08-04&sr=b&scid=3b398986-1433-50df-a3ed-e0360024a586&skoid=04233560-0ad7-493e-8bf0-1347c317d021&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-06-21T17%3A38%3A49Z&ske=2025-06-22T17%3A38%3A49Z&sks=b&skv=2024-08-04&sig=ZWbCGbCxLfLI0s%2BKwRXHg6Oxp%2Bb%2BlFXgGiykKoOg/Ew%3D';
+        const CARD_BACK_IMAGE = 'https://pbs.twimg.com/media/GuDgm1OXcAAPFHz?format=jpg&name=small';
         const CHARACTER_NAMES = ["Shadowblade", "Mystic Monk", "Ironclad", "Solar Sentinel", "Void Weaver", "Flame Caller", "Aqua Guardian", "Terra Titan", "Cyber Dragon", "Cosmic Phoenix", "Grim Reaper", "Divine Healer"];
         const RARITIES = ["Common", "Rare", "Epic", "Legendary"];
         const RARITY_WEIGHTS = { "Common": 0.6, "Rare": 0.25, "Epic": 0.1, "Legendary": 0.05 };
