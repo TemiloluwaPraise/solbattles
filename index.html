@@ -486,9 +486,9 @@
         .hero-actions {
             display: flex;
             justify-content: center;
-            gap: 1.5rem; /* Space between buttons */
+            gap: 1.5rem;
             margin-top: 2rem;
-            position: relative; /* Ensure buttons are above pseudo-elements */
+            position: relative;
             z-index: 2;
         }
 
@@ -572,7 +572,7 @@
             /* transform: translateY(20px); Removed, handled by GSAP. */
         }
 
-        /* Removed .visible class for stat-item as GSAP will control opacity/transform */
+        /* Removed .visible for stat-item as GSAP will control opacity/transform */
 
         .stat-item:hover {
             transform: translateY(-5px) scale(1.02);
@@ -1393,7 +1393,7 @@
                 <div class="docs-section section-animate-in">
                     <p class="text-animate-in">Welcome to the SolBattles Documentation! Here you'll find everything you need to know about the game, from basic rules to advanced strategies, tokenomics, and blockchain integration.</p>
                     <p class="text-animate-in">We are constantly updating our documentation. If you have any questions, please join our community channels!</p>
-                    <button class="glow-button primary-button text-animate-in">Read Full Documentation</button>
+                    <button id="readDocsBtn" class="glow-button primary-button text-animate-in">Read Full Documentation</button>
                 </div>
             </div>
         </section>
@@ -1432,17 +1432,29 @@
         let opponentDeckInBattle = []; // To store opponent's chosen cards for battle display
 
         const MOCK_WALLET_ADDRESS = "0xS0L...ddr3ss";
-        const PLACEHOLDER_CARD_IMAGES = ['https://via.placeholder.com/180x250/FF5733/FFFFFF?text=CHAR_01', 'https://via.placeholder.com/180x250/00BFFF/FFFFFF?text=CHAR_02', 'https://via.placeholder.com/180x250/8A2BE2/FFFFFF?text=CHAR_03', 'https://via.placeholder.com/180x250/3CE6BC/FFFFFF?text=CHAR_04', 'https://via.placeholder.com/180x250/E94560/FFFFFF?text=CHAR_05'];
+        // Updated character images
+        const CHARACTER_IMAGES = [
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small',
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small',
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small',
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small',
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small',
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small',
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small',
+            'https://pbs.twimg.com/media/Gt8vO6hXkAAABw1?format=jpg&name=small'
+        ];
+        // Updated card back image
         const CARD_BACK_IMAGE = 'https://pbs.twimg.com/media/GuDgm1OXcAAPFHz?format=jpg&name=small';
         const CHARACTER_NAMES = ["Shadowblade", "Mystic Monk", "Ironclad", "Solar Sentinel", "Void Weaver", "Flame Caller", "Aqua Guardian", "Terra Titan", "Cyber Dragon", "Cosmic Phoenix", "Grim Reaper", "Divine Healer"];
         const RARITIES = ["Common", "Rare", "Epic", "Legendary"];
         const RARITY_WEIGHTS = { "Common": 0.6, "Rare": 0.25, "Epic": 0.1, "Legendary": 0.05 };
+        // Updated shop inventory with specific pack images
         const shopInventory = [
-            { id: 'pack001', name: 'Mystic Pack', price: 200, type: 'pack', description: 'Contains 3 random cards.', count: 3, rarityBoost: { 'Rare': 0.1 } },
-            { id: 'pack002', name: 'Elite Pack', price: 500, type: 'pack', description: 'Contains 5 random cards, higher chance for rare.', count: 5, rarityBoost: { 'Rare': 0.2, 'Epic': 0.05 } },
-            { id: 'pack003', name: 'Legendary Scroll', price: 1000, type: 'pack', description: 'Contains 1 guaranteed Legendary card!', count: 1, guaranteedRarity: 'Legendary' },
-            { id: 'pack004', name: 'Elemental Cache', price: 350, type: 'pack', description: 'Contains 4 cards with a focus on elemental types.', count: 4, rarityBoost: { 'Rare': 0.15 } },
-            { id: 'pack005', name: 'Ancestral Relic', price: 750, type: 'pack', description: 'Contains 2 powerful cards, very high chance for Epic.', count: 2, rarityBoost: { 'Epic': 0.2, 'Legendary': 0.02 } }
+            { id: 'pack001', name: 'Mystic Pack', price: 200, type: 'pack', description: 'Contains 3 random cards.', count: 3, rarityBoost: { 'Rare': 0.1 }, imageUrl: 'https://pbs.twimg.com/media/GuDc5rWWEAEm5ew?format=jpg&name=medium' },
+            { id: 'pack002', name: 'Elite Pack', price: 500, type: 'pack', description: 'Contains 5 random cards, higher chance for rare.', count: 5, rarityBoost: { 'Rare': 0.2, 'Epic': 0.05 }, imageUrl: 'https://pbs.twimg.com/media/GuDc5rWWEAEm5ew?format=jpg&name=medium' },
+            { id: 'pack003', name: 'Legendary Scroll', price: 1000, type: 'pack', description: 'Contains 1 guaranteed Legendary card!', count: 1, guaranteedRarity: 'Legendary', imageUrl: 'https://pbs.twimg.com/media/GuDc5rWWEAEm5ew?format=jpg&name=medium' },
+            { id: 'pack004', name: 'Elemental Cache', price: 350, type: 'pack', description: 'Contains 4 cards with a focus on elemental types.', count: 4, rarityBoost: { 'Rare': 0.15 }, imageUrl: 'https://pbs.twimg.com/media/GuDc5rWWEAEm5ew?format=jpg&name=medium' },
+            { id: 'pack005', name: 'Ancestral Relic', price: 750, type: 'pack', description: 'Contains 2 powerful cards, very high chance for Epic.', count: 2, rarityBoost: { 'Epic': 0.2, 'Legendary': 0.02 }, imageUrl: 'https://pbs.twimg.com/media/GuDc5rWWEAEm5ew?format=jpg&name=medium' }
         ];
         let leaderboardData = [
             { rank: 1, username: 'CryptoKing', wins: 150, earnings: 75250 },
@@ -1458,11 +1470,11 @@
         // --- Core Functions ---
         function initializeOwnedCards() {
             ownedCards = [
-                { id: 'player001', name: 'Basic Brawler', description: 'A solid fighter to start your journey.', imageUrl: PLACEHOLDER_CARD_IMAGES[0], attack: 10, defense: 8, health: 30, level: 1, rarity: 'Common', lore: '' },
-                { id: 'player002', name: 'Nimble Rogue', description: 'Quick and agile, hard to hit.', imageUrl: PLACEHOLDER_CARD_IMAGES[1], attack: 12, defense: 6, health: 25, level: 1, rarity: 'Common', lore: '' },
-                { id: 'player003', name: 'Stone Golem', description: 'Slow but incredibly tough.', imageUrl: PLACEHOLDER_CARD_IMAGES[2], attack: 7, defense: 15, health: 40, level: 1, rarity: 'Rare', lore: '' },
-                { id: 'player004', name: 'Solar Sentinel', description: 'Guardian of the sun-drenched plains.', imageUrl: PLACEHOLDER_CARD_IMAGES[3], attack: 15, defense: 10, health: 35, level: 2, rarity: 'Rare', lore: '' },
-                { id: 'player005', name: 'Void Weaver', description: 'Manipulates dark energies from beyond.', imageUrl: PLACEHOLDER_CARD_IMAGES[4], attack: 20, defense: 5, health: 30, level: 3, rarity: 'Epic', lore: '' }
+                { id: 'player001', name: 'Basic Brawler', description: 'A solid fighter to start your journey.', imageUrl: CHARACTER_IMAGES[0], attack: 10, defense: 8, health: 30, level: 1, rarity: 'Common', lore: '' },
+                { id: 'player002', name: 'Nimble Rogue', description: 'Quick and agile, hard to hit.', imageUrl: CHARACTER_IMAGES[1], attack: 12, defense: 6, health: 25, level: 1, rarity: 'Common', lore: '' },
+                { id: 'player003', name: 'Stone Golem', description: 'Slow but incredibly tough.', imageUrl: CHARACTER_IMAGES[2], attack: 7, defense: 15, health: 40, level: 1, rarity: 'Rare', lore: '' },
+                { id: 'player004', name: 'Solar Sentinel', description: 'Guardian of the sun-drenched plains.', imageUrl: CHARACTER_IMAGES[3], attack: 15, defense: 10, health: 35, level: 2, rarity: 'Rare', lore: '' },
+                { id: 'player005', name: 'Void Weaver', description: 'Manipulates dark energies from beyond.', imageUrl: CHARACTER_IMAGES[4], attack: 20, defense: 5, health: 30, level: 3, rarity: 'Epic', lore: '' }
             ];
         }
 
@@ -1496,7 +1508,7 @@
             const { guaranteedRarity = null, rarityBoosts = {} } = options;
             const rarity = guaranteedRarity || getRandomRarity(rarityBoosts);
             const name = getRandomElement(CHARACTER_NAMES) + ' ' + rarity.split('')[0];
-            const imageUrl = getRandomElement(PLACEHOLDER_CARD_IMAGES);
+            const imageUrl = getRandomElement(CHARACTER_IMAGES); // Use new CHARACTER_IMAGES
             let attack, defense, health;
 
             switch (rarity) {
@@ -1619,7 +1631,7 @@
                     id: item.id,
                     name: item.name,
                     description: `${item.description} Cost: ${item.price} $SLUG`,
-                    imageUrl: 'https://via.placeholder.com/180x250/4DCFFD/FFFFFF?text=CARD+PACK', // Generic pack image
+                    imageUrl: item.imageUrl, // Use specific pack image
                     attack: 'N/A', defense: 'N/A', health: 'N/A', level: 'N/A', rarity: 'Pack'
                 };
                 const tempDiv = document.createElement('div');
@@ -1663,7 +1675,7 @@
                     document.getElementById('collectCardsBtn').style.display = 'none';
                     packAnimation.querySelector('h3').textContent = 'Opening Pack...';
                     packAnimation.querySelector('.reveal-message').textContent = 'Click to reveal your cards!';
-                    packAnimation.querySelector('.pack-image').src = 'https://via.placeholder.com/200x200/533483/e0e0e0?text=PACK';
+                    packAnimation.querySelector('.pack-image').src = item.imageUrl; // Use specific pack image
                     // Reset GSAP animation for pack image if it was altered
                     gsap.to(packAnimation.querySelector('.pack-image'), { y: 0, rotation: 0, duration: 0.5, ease: "power1.out" });
 
@@ -1718,7 +1730,8 @@
                                 packAnimation.querySelector('h3').textContent = 'Pack Opened!';
                                 packAnimation.querySelector('.reveal-message').textContent = 'All cards revealed!';
                                 gsap.to(packAnimation.querySelector('.pack-image'), { rotation: 360, duration: 1, ease: "power1.out", onComplete: () => {
-                                    packAnimation.querySelector('.pack-image').src = 'https://via.placeholder.com/200x200/533483/e0e0e0?text=PACK+OPENED';
+                                    // You might want to change the pack image to an "opened pack" image here
+                                    packAnimation.querySelector('.pack-image').src = item.imageUrl; // Keep the specific pack image or change to opened state
                                 }});
                             }
                         }
@@ -2072,7 +2085,7 @@
                     strategyAdviceOutput.innerHTML = '<p>An error occurred while contacting the AI. Please try again later.</p>';
                     strategyAdviceOutput.style.display = 'block';
                 } finally {
-                    getStrategyBtn.textContent = '✨ Generate Lore';
+                    getStrategyBtn.textContent = '✨ Get Strategy Advice';
                     getStrategyBtn.disabled = false;
                 }
             };
@@ -2081,7 +2094,7 @@
         function toggleCardSelection(card) {
             const cardElement = document.querySelector(`.card[data-card-id="${card.id}"]`);
             const findOpponentBtn = document.getElementById('findOpponentBtn');
-            const getStrategyBtn = document = document.getElementById('getStrategyBtn');
+            const getStrategyBtn = document.getElementById('getStrategyBtn'); // Corrected typo here
 
             if (selectedBattleCards.some(c => c.id === card.id)) {
                 selectedBattleCards = selectedBattleCards.filter(c => c.id !== card.id);
@@ -2339,10 +2352,13 @@
                 <div class="docs-section section-animate-in">
                     <p class="text-animate-in">Welcome to the SolBattles Documentation! Here you'll find everything you need to know about the game, from basic rules to advanced strategies, tokenomics, and blockchain integration.</p>
                     <p class="text-animate-in">We are constantly updating our documentation. If you have any questions, please join our community channels!</p>
-                    <button class="glow-button primary-button text-animate-in">Read Full Whitepaper</button>
-                    <button class="glow-button inverted-button text-animate-in" style="margin-left: 15px;">Join Discord Community</button>
+                    <button id="readDocsBtn" class="glow-button primary-button text-animate-in">Read Full Documentation</button>
                 </div>
             `;
+            // Add event listener for the "Read Full Documentation" button
+            document.getElementById('readDocsBtn').addEventListener('click', () => {
+                window.open('https://solbattles-1.gitbook.io/solbattles-docs/', '_blank'); 
+            });
         }
 
         // --- Wallet Connection & Utility ---
